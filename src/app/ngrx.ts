@@ -1,24 +1,51 @@
-import { Action } from '@ngrx/store';
+import {
+    Action,
+    createAction,
+    props,
+    createReducer,
+    on
+} from '@ngrx/store';
 
-class Decrement implements Action {
-    readonly type = 'Decrement';
+enum ActionTypes {
+    Increment = 'Increment',
+    Decrement = 'Decrement'
 }
 
-class Increment implements Action {
-    readonly type = 'Increment';
-}
+// export class Decrement implements Action {
+//     readonly type = ActionTypes.Decrement;
+// }
+
+export const increment = createAction (
+    ActionTypes.Increment
+);
+
+export const decrement = createAction (
+    ActionTypes.Decrement
+);
 
 const INITIAL_STATE = {
     counter: 0
 };
 
-export const reducer = (state = INITIAL_STATE, action: Action) => {
-    switch (action.type) {
-        case 'Decrement':
-            return { ...state, counter: state.counter - 1};
-        case 'Increment':
-            return { ...state, counter: state.counter + 1};
-        default:
-            return state;
-    }
-};
+// export const reducer = (state = INITIAL_STATE, action: any) => {
+//     switch (action.type) {
+//         case ActionTypes.Decrement:
+//             return { ...state, counter: state.counter - 1};
+//         case ActionTypes.Increment:
+//             return { ...state, counter: state.counter + action.payload};
+//         default:
+//             return state;
+//     }
+// };
+
+export const reducer = createReducer(
+    INITIAL_STATE,
+    on(increment, state => ({
+        ...state,
+        counter: state.counter + 1
+    })),
+    on(decrement, state => ({
+        ...state,
+        counter: state.counter - 1
+    }))
+);

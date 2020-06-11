@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, timer } from 'rxjs';
+
+import { decrement, increment } from '../ngrx';
 
 @Component({
   selector: 'app-counter',
@@ -11,7 +13,7 @@ export class CounterComponent implements OnInit {
 
   public counter$: Observable<any>;
 
-  constructor(private store: Store<{counter: number}>) {}
+  constructor(private store: Store<any>) {}
 
   ngOnInit() {
     this.counter$ = this.store.pipe(
@@ -20,10 +22,14 @@ export class CounterComponent implements OnInit {
   }
 
   decrement() {
-    this.counter--;
+    this.store.dispatch(
+      decrement()
+    );
   }
 
   increment() {
-    this.counter++;
+    this.store.dispatch(
+      increment()
+    );
   }
 }
